@@ -1,0 +1,22 @@
+#!/bin/sh
+   #
+   # An example hook script to verify what is about to be committed.
+   # Called by "git commit" with no arguments
+   # blah...
+   # .*/##Date= $(date)/" README.md
+      
+   
+
+git status -s > "FileNames.txt" 
+sed -i -f "C:\Program Files\Git\MakeFileNames.sed" "FileNames.txt"
+
+while read filename
+do              		
+		 sed -i 's!$$Date.*!$$Date:'"`date '+%Y-%m-%d %H:%M:%S'`"'!g'  $filename  # This works Can use this too
+    # Both statements below work 
+    # cat  $filename > Temp.txt ; cat Temp.txt | "C:\Program Files\Git\bin\KW_Exp.exe" >  $filename  #Works.  Needs comment
+  	cat  $filename > Temp.txt ; cat Temp.txt | ".\.Git\KW_Exp.exe" >  $filename  #Works.  Needs comment
+     git add $filename  # May need this
+done < FileNames.txt
+rm Temp.txt
+
